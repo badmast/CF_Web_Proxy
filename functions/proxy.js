@@ -38,11 +38,11 @@ export async function onRequest(context) {
   let proxiedUrl;
   let watchUrl;
   if (url.hostname === 'cf-web-proxy.pages.dev') {
-    proxiedUrl = `https://cf-web-proxy.pages.dev/download?data=${encodedData}`;
-    watchUrl = `https://cf-web-proxy/watch?data=${encodedData}`;
-  } else {
     proxiedUrl = `https://cfproxy.global.ssl.fastly.net/download?data=${encodedData}`;
     watchUrl = `https://cfproxy.global.ssl.fastly.net/watch?data=${encodedData}`;
+  } else {
+    proxiedUrl = `${url.origin}/download?data=${encodedData}`;
+    watchUrl = `${url.origin}/watch?data=${encodedData}`;
   }
 
   return new Response(`
