@@ -25,7 +25,7 @@ export async function onRequest(context) {
   } catch (error) {
     console.error('Error fetching blacklist:', error);
   }
-  
+
   const requestedDomain = new URL(originalUrl).hostname;
   if (blockedDomains.includes(requestedDomain)) {
     return new Response('This domain is not allowed', { status: 403 });
@@ -34,16 +34,10 @@ export async function onRequest(context) {
   const filename = originalUrl.split('/').pop();
   const encodedData = btoa(JSON.stringify({ url: originalUrl, filename: filename }));
 
-  // Check the hostname and modify the links
-  let proxiedUrl;
-  let watchUrl;
-  if (url.hostname === 'your-domain.com') {
-    proxiedUrl = `https://edge05.0.ir.cdn.ir/download?data=${encodedData}`;
-    watchUrl = `https://edge05.66065.ir.cdn.ir/watch?data=${encodedData}`;
-  } else {
-    proxiedUrl = `${url.origin}/download?data=${encodedData}`;
-    watchUrl = `${url.origin}/watch?data=${encodedData}`;
-  }
+  // Always route to Fastly proxy
+  const fastlyBase = 'https://cfproxy.global.ssl.fastly.net';
+  const proxiedUrl = `${fastlyBase}/download?data=${encodedData}`;
+  const watchUrl = `${fastlyBase}/watch?data=${encodedData}`;
 
   return new Response(`
     <html>
@@ -70,7 +64,7 @@ export async function onRequest(context) {
         </div>
         <div class="container">
           <h1>Download</h1>
-          <p id="downloadLink">https://cfproxy.global.ssl.fastly.net/</p>
+          <p id="downloadLink">${proxiedUrl}</p>
           <a href="${proxiedUrl}" class="button download-button">Download</a>
         </div>
         <p class="filename">Filename: ${filename}</p>
