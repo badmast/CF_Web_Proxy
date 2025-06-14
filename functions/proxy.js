@@ -40,10 +40,6 @@ export async function onRequest(context) {
   if (url.hostname === 'cf-web-proxy.pages.dev') {
     proxiedUrl = `https://cfproxy.global.ssl.fastly.net/download?data=${encodedData}`;
     watchUrl = `https://cfproxy.global.ssl.fastly.net/watch?data=${encodedData}`;
-  } else {
-    proxiedUrl = `${url.origin}/download?data=${encodedData}`;
-    watchUrl = `${url.origin}/watch?data=${encodedData}`;
-  }
 
   return new Response(`
     <html>
