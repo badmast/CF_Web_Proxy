@@ -37,12 +37,12 @@ export async function onRequest(context) {
   // Check the hostname and modify the links
   let proxiedUrl;
   let watchUrl;
-  if (url.hostname === 'cf-web-proxy.pages.dev') {
-    proxiedUrl = `https://cfproxy.global.ssl.fastly.net/download?data=${encodedData}`;
-    watchUrl = `https://cfproxy.global.ssl.fastly.net/watch?data=${encodedData}`;
+  if (url.hostname === 'your-domain.com') {
+    proxiedUrl = `https://edge05.0.ir.cdn.ir/download?data=${encodedData}`;
+    watchUrl = `https://edge05.66065.ir.cdn.ir/watch?data=${encodedData}`;
   } else {
-    proxiedUrl = `https://cfproxy.global.ssl.fastly.net/download?data=${encodedData}`;
-    watchUrl = `https://cfproxy.global.ssl.fastly.net/watch?data=${encodedData}`;
+    proxiedUrl = `${url.origin}/download?data=${encodedData}`;
+    watchUrl = `${url.origin}/watch?data=${encodedData}`;
   }
 
   return new Response(`
@@ -70,7 +70,7 @@ export async function onRequest(context) {
         </div>
         <div class="container">
           <h1>Download</h1>
-          <p id="downloadLink">${proxiedUrl}</p>
+          <p id="downloadLink">https://cfproxy.global.ssl.fastly.net/</p>
           <a href="${proxiedUrl}" class="button download-button">Download</a>
         </div>
         <p class="filename">Filename: ${filename}</p>
