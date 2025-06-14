@@ -37,9 +37,9 @@ export async function onRequest(context) {
   // Proxying URLs based on the hostname
   let proxiedUrl;
   let watchUrl;
-  if (url.hostname === 'your-domain.com') {
-    proxiedUrl = `https://edge05.000.ir.cdn.ir/download?data=${encodedData}`;
-    watchUrl = `https://edge05.000.ir.cdn.ir/watch?data=${encodedData}`;
+  if (url.hostname === 'proxy.minitor.eu.org') {
+    proxiedUrl = `https://cfproxy.global.ssl.fastly.net/download?data=${encodedData}`;
+    watchUrl = `https://cfproxy.global.ssl.fastly.net/watch?data=${encodedData}`;
   } else {
     proxiedUrl = `${url.origin}/download?data=${encodedData}`;
     watchUrl = `${url.origin}/watch?data=${encodedData}`;
