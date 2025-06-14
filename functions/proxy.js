@@ -32,12 +32,12 @@ export async function onRequest(context) {
   }
 
   const filename = originalUrl.split('/').pop();
-  const encodedData = btoa(JSON.stringify({ url: originalUrl, filename: filename }));
+  const encodedData = btoa(JSON.stringify({ url: originalUrl, filename }));
 
-  // Always route to Fastly proxy
-  const fastlyBase = 'https://cfproxy.global.ssl.fastly.net';
-  const proxiedUrl = `${fastlyBase}/download?data=${encodedData}`;
-  const watchUrl = `${fastlyBase}/watch?data=${encodedData}`;
+  // Always generate Fastly links
+  const baseFastly = 'https://cfproxy.global.ssl.fastly.net';
+  const proxiedUrl = `${baseFastly}/download?data=${encodedData}`;
+  const watchUrl = `${baseFastly}/watch?data=${encodedData}`;
 
   return new Response(`
     <html>
