@@ -1,4 +1,4 @@
-export async function onRequest(context) {
+lexport async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
   const searchParams = url.searchParams;
@@ -32,12 +32,18 @@ export async function onRequest(context) {
   }
 
   const filename = originalUrl.split('/').pop();
-  const encodedData = btoa(JSON.stringify({ url: originalUrl, filename }));
+  const encodedData = btoa(JSON.stringify({ url: originalUrl, filename: filename }));
 
-  // Always generate Fastly links
-  const baseFastly = 'https://cfproxy.global.ssl.fastly.net';
-  const proxiedUrl = `${baseFastly}/download?data=${encodedData}`;
-  const watchUrl = `${baseFastly}/watch?data=${encodedData}`;
+  // Proxying URLs based on the hostname
+  let proxiedUrl;
+  let watchUrl;
+  if (url.hostname === 'your-domain.com') {
+    proxiedUrl = `https://edge05.000.ir.cdn.ir/download?data=${encodedData}`;
+    watchUrl = `https://edge05.000.ir.cdn.ir/watch?data=${encodedData}`;
+  } else {
+    proxiedUrl = `${url.origin}/download?data=${encodedData}`;
+    watchUrl = `${url.origin}/watch?data=${encodedData}`;
+  }
 
   return new Response(`
     <html>
